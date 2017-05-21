@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="application/javascript; charset=utf-8">
+    <title>jsMind</title>
+    <link type="text/css" rel="stylesheet" href="../resources/jsmind.css" />
+    <style type="text/css">
+        li{margin-top:2px; margin-bottom:2px;}
+        button{width:140px;}
+        select{width:140px;}
+        #layout{width:1230px;}
+        #jsmind_nav{width:210px;height:600px;border:solid 1px #ccc;overflow:auto;float:left;}
+        .file_input{width:100px;}
+        button.sub{width:100px;}
+
+        #jsmind_container{
+            float:left;
+            width:1000px;
+            height:600px;
+            border:solid 1px #ccc;
+            background:#f4f4f4;
+        }
+    </style>
+</head>
+<body>
+<div id="layout">
+    <div id="jsmind_container"></div>
+    <div style="display:none">
+      <input class="file" type="file" id="image-chooser" accept="image/*"/>
+    </div>
+    <div id="input_area">
+    <form id="chatbox">
+        <input type="text" id="input_text" value="" />
+        <input type="submit" id="send_button" value="Send" />
+    </form>
+    <ul id="messages"></ul>
+    </div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="../resources/jsmind.js"></script>
+<script type="text/javascript" src="../resources/jsmind.draggable.js"></script>
+<script type="text/javascript" src="../resources/jsmind.screenshot.js"></script>
+
+<script type="text/javascript">
+    var _jm = null;
+    function open_empty(){
+        var options = {
+            container:'jsmind_container',
+            theme:'greensea',
+            editable:true
+        }
+        _jm = jsMind.show(options);
+        // _jm = jsMind.show(options,mind);
+    }
+
+/* origin
+    function add_node(msg_str){
+        var selected_node = _jm.get_selected_node(); // as parent of new node
+
+        console.log('show selected_node inside add_node function');
+        console.dir(selected_node);
+
+        // console.log('selected_node is Object?: %s', is('Object', selected_node));
+        if(!selected_node){prompt_info('please select a node first.');return;}
+
+        var nodeid = jsMind.util.uuid.newid();
+        // str = $("#msgbox").val();
+        //var topic = $("#msgbox").val();
+
+        // 引数を受け取るように
+        var topic = msg_str;
+        // var topic = '* Node_'+nodeid.substr(0,5)+' *';
+        var node = _jm.add_node(selected_node, nodeid, topic);
+    }
+*/
+/*
+    function add_node(msg_str, selected_node){
+        // var selected_node = _jm.get_selected_node(); // as parent of new node
+        console.log('show selected_node inside add_node function');
+        console.dir(selected_node);
+
+        var nodeid = jsMind.util.uuid.newid();
+        var topic = msg_str;
+        var node = _jm.add_node(selected_node, nodeid, topic);
+    }
+*/
+
+/*
+    function add_node(selected_node){
+        // var selected_node = _jm.get_selected_node(); // as parent of new node
+        console.log('show selected_node inside add_node function');
+        console.dir(selected_node);
+
+        var nodeid = jsMind.util.uuid.newid();
+        var topic = "topictopic";
+        var node = _jm.add_node(selected_node, nodeid, topic);
+    }
+*/
+    function get_selected_node(){
+        return _jm.get_selected_node();
+    }
+
+    open_empty();
+
+  //$(function(){
+    $(window).load(function() {
+    var socket = null;
+    var msgBox = $("#input_text");
+    var messages = $("#messages");
+
+    $("#chatbox").submit(function(){
+        console.log('test msgBox: %s', msgBox.val());
+        if (!msgBox.val()) return false;
+        if (!socket) {
+            alert("Error: There is no socket connection.");
+            return false;
+        }
+
+        // console.log('show selected_node inside jquery function');
+        // console.dir(get_selected_node());
+        console.log('truoc khi tao node');
+        _jm.add_node(get_selected_node(), jsMind.util.uuid.newid(), msgBox.val());
+        console.log('sau khi tao node');
+        console.dir(get_selected_node());
+        socket.send(msgBox.val());
+        // socket.send(JSON.stringify({msg:msgBox.val(), node:get_selected_node()}));
+        // socket.send(JSON.stringify(get_selected_node()));
+
+        msgBox.val("");
+        return false;
+    });
+
+    if (!window["WebSocket"]) {
+      alert("Error: Your browser does not support web sockets.")
+    } else {
+        socket = new WebSocket("ws://{{.Host}}/room");
+        socket.onclose = function() {
+        alert("Connection has been closed.");
+        }
+        socket.onmessage = function(e) {
+            messages.append($("<li>").text(e.data));
+            // add_node(e.data);
+            _jm.add_node(get_selected_node(), jsMind.util.uuid.newid(), e.data);
+
+            // console.log('show selected_node inside jquery function')
+            // console.dir(JSON.parse(e.data).node);
+            // messages.append($("<li>").text(JSON.parse(e.data).msg));
+            // add_node(JSON.parse(e.data).msg, JSON.parse(e.data).node);
+
+            // if (JSON.parse(e.data).node === get_selected_node() || JSON.parse(e.data).msg === msgBox.val()) {
+            //     console.log('giong nhau ma');
+            // } else {
+            //     _jm.add_node(JSON.parse(e.data).node, jsMind.util.uuid.newid(), JSON.parse(e.data).msg);
+            // }
+            // messages.append($("<li>").text('fuckfuckfuck'));
+            // add_node(JSON.parse(e.data));
+        }
+    }
+
+  });
+
+</script>
+
+</body>
+</html>
