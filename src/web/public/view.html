@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Theme Made By www.w3schools.com - No Copyright -->
+  <title>Mindmap for all</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="../resources/jsmind.css" />
+
+  <script type="text/javascript" src="../resources/jsmind.js"></script>
+  <script type="text/javascript" src="../resources/jsmind.draggable.js"></script>
+  <script type="text/javascript" src="../resources/jsmind.screenshot.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style type="text/css">
+      #jsmind_container{
+          width:800px;
+          height:500px;
+          border:solid 1px #ccc;
+          /*background:#f4f4f4;*/
+          background:#f4f4f4;
+      }
+  </style>
+  <style>
+  body {
+      font: 20px Montserrat, sans-serif;
+      line-height: 1.8;
+      color: #f5f6f7;
+  }
+  p {font-size: 16px;}
+  .margin {margin-bottom: 45px;}
+  .bg-1 {
+      background-color: #1abc9c; /* Green */
+      color: #ffffff;
+  }
+  .bg-2 {
+      background-color: #474e5d; /* Dark Blue */
+      color: #ffffff;
+  }
+  .container-fluid {
+      padding-top: 20px;
+      padding-bottom: 20px;
+  }
+  </style>
+</head>
+<body>
+<button></button>
+<div id="jsmind_container"; position: absolute></div>
+<button type="button" class="btn btn-danger" id="btn1" value="1">1</button>
+<button type="button" class="btn btn-danger" id="btn1" value="2">2</button>
+<button type="button" class="btn btn-danger" id="btn1" value="3">3</button>
+<button type="button" class="btn btn-danger" id="btn1" value="4">4</button>
+<button type="button" class="btn btn-danger" id="btn1" value="5">5</button>
+<button type="button" class="btn btn-danger" id="btn1" value="6">6</button>
+
+<script>
+  function load_jsmind(jsmind_data){
+    var options = {
+        container:'jsmind_container',
+        editable:true,
+        theme:'primary'
+    }
+    var mind = jsMind.util.json.string2json(jsmind_data);
+    if(!!mind){
+        // _jm.show(mind);
+        jsMind.show(options,mind);
+    }else{
+        prompt_info('can not open this file as mindmap');
+    }
+  }
+
+  $(function(){
+
+
+    $("button").on('click', function() {
+      $("#jsmind_container").empty();
+      axios.get('http://localhost:4000/mind/' + $(this).val())
+      .then(function(response){
+      // console.dir(response.data); // ex.: { user: 'Your User'}
+      // console.log(response.status); // ex.: 200
+      // console.dir(jsMind.util.json.string2json(response.data));
+      // jm.show(jsMind.util.json.string2json(response.data));
+      console.dir(response.data.Mind);
+      load_jsmind(response.data.Mind);
+			})
+      .catch(function (error) {
+      console.log(error);
+      })
+    });
+
+
+  });
+
+  </script>
+</body>
+</html>

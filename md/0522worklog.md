@@ -8,17 +8,17 @@
 [] 位置の同期をする
 [] 削除機能をつける
 
-#### メンターリング
+#### メンタ-リング
 * 明日発表練習をする
 * 午後は聞かれそうなところを直す
-* 理想:何のサービス + `工夫`したところ + demo
+* 理想:何のサ-ビス + `工夫`したところ + demo
 
 ## DBの設計
 ### 作成したマインドマップの名前一覧から開けるようにする
-#### 一覧のページを作る
-- DBから一覧テーブルの最新10件を取ってきて表示する`@一覧のページ`
-- 名前が選択されたらJSONテーブルからそれを取ってきて`show()`に渡す
-`@表示のページ`
+#### 一覧のペ-ジを作る
+- DBから一覧テ-ブルの最新10件を取ってきて表示する`@一覧のペ-ジ`
+- 名前が選択されたらJSONテ-ブルからそれを取ってきて`show()`に渡す
+`@表示のペ-ジ`
 
 #### マインドマップを書くために何が必要
 
@@ -72,7 +72,7 @@ load_jsmind();
 
 ##### 保存する(保存ボタン@js --> get_data[name, json]@js --> savemysql@go-lang)
 
-- __データはどこに保存されるか__
+- __デ-タはどこに保存されるか__
 - __それをどうDBに書き込むかか__
     `main_data`
     * 作成した日付
@@ -86,7 +86,7 @@ load_jsmind();
 - __どこに保存されるか__
 保存形態は3つがあるらしい
 * `node_tree(default)` JSON
-こういう感じ⇒`options`がないじゃん？`固定すればいいかな`
+こういう感じ⇒`options`がないじゃん?`固定すればいいかな`
 
 ```json
 {"meta":{"name":"jsMind","author":"hizzgdev@163.com","version":"0.4.3"},"format":"node_tree","data":{"id":"root","topic":"jsMind Example","expanded":true}}
@@ -104,14 +104,14 @@ function save_file(){
     jsMind.util.file.save(mind_str,'text/jsmind',mind_name+'.jm');
 }
 ```
-`_jm.get_data()`でマインドマップのデータを保存できる(JSON)、
+`_jm.get_data()`でマインドマップのデ-タを保存できる(JSON)、
 さらに`.meta.name`で`meta`で宣言した名前
 
 ##### DBから参照(名前選択@js --> DBから取得する@go-lang --> 表示する@js)
 
 - __どうopenするか__
 サンプルでは`choose file`してから`open file`する
-`choose file`は`input type="file"`でファイルを開く？
+`choose file`は`input type="file"`でファイルを開く?
 
 ```html
 <li><input id="file_input" class="file_input" type="file"/></li>
@@ -143,7 +143,7 @@ function open_file(){
 ⇒DBから持ってくる時は`string`にする必要ある
 
 
-### DBサーバーを作るかどうか
+### DBサ-バ-を作るかどうか
 先に`local DB`で作成するべき
 #### mySql installing:
 ```bash
@@ -166,7 +166,7 @@ mysql> select user,host from mysql.user;
 ```sql
 CREATE DATABASE mindmap;
 ```
-##### テーブル作成
+##### テ-ブル作成
 
 `main_data`
 * id
@@ -215,22 +215,22 @@ JSONをどうやってmySqlに保存するか?`varchar`で保存するか
 ```
 
 ##### bootstrapの使い方を勉強する
-`コンテナ`はページの基本シートとなる要素
+`コンテナ`はペ-ジの基本シ-トとなる要素
 Bootstrap の各要素をコンテナの中に記述
 `container` は固定的コンテナを生成します
 ウィンドウの横幅に応じて段階的に横幅が変動します
 とにかく、containerの中で全部書けばいいかな
 
 [ICON photo](https://pbs.twimg.com/profile_images/642108475980574720/TL3Bgv-C.jpg)
-__上から各ページを作って行く__
+__上から各ペ-ジを作って行く__
 [x]`index.html`(create new & view past)
-    + ボタンにクリックする時に参照するページはまだ指定していない
+    + ボタンにクリックする時に参照するペ-ジはまだ指定していない
     + ボタンのデザインをもうちょっと簡潔にしたい
-    [] `html`ページをデザインする
+    [] `html`ペ-ジをデザインする
 [ ]`view.html`(DBから10個持ってくる)
     [] `html` mindmapの一覧リスト
     [] `javascript`
-        * ページロードされたら`list`を取る命令をgoに送る
+        * ペ-ジロ-ドされたら`list`を取る命令をgoに送る
         * 選択された`name`をgo-langに渡す
     [] `go-lang` DBから
         * 一覧取得命令をもらい、DBから`fetch`する
@@ -241,7 +241,7 @@ __上から各ページを作って行く__
     [] `javascript` 保存ボタンを追加、goと連携
     [] `go-lang` jsから値をもらってmysqlに保存する
 
-### これってAPIサーバーかな
+### これってAPIサ-バ-かな
 #####`API`と`UI`の区別:
 * `人`が触るのがUI(ボタンなど)
 * APIは`プログラム`が操作できるもの
@@ -249,7 +249,7 @@ __上から各ページを作って行く__
 ##### APIとUIが連携した仕組み
 [UI](/mindmaps/1)
 [API](mindmap1を返す)
-UIから`Request`をAPIに送る→データが返ってくる(JSON等)
+UIから`Request`をAPIに送る→デ-タが返ってくる(JSON等)
 __ほしいものを文字のrequestでgetできる__
 
 #### これをAPIにするためには
