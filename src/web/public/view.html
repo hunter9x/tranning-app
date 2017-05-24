@@ -58,6 +58,7 @@
 <button type="button" class="btn btn-danger" id="btn1" value="5">5</button>
 <button type="button" class="btn btn-danger" id="btn1" value="6">6</button>
 
+
 <script>
   function load_jsmind(jsmind_data){
     var options = {
@@ -87,12 +88,11 @@
       // jm.show(jsMind.util.json.string2json(response.data));
       console.dir(response.data.Mind);
       load_jsmind(response.data.Mind);
-			})
+      })
       .catch(function (error) {
       console.log(error);
       })
     });
-
 
   });
 
